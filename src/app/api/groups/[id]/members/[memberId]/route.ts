@@ -2,13 +2,14 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 
-export async function DELETE(req: Request, { params }: { params: { id: string, memberId: string } }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string, memberId: string }> }) {
   try {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const groupId = params.id;
-    const targetUserId = params.memberId;
+    const resolvedParams = await params;
+    const groupId = resolvedParams.id;
+    const targetUserId = resolvedParams.memberId;
 
     const requesterMembership = await prisma.groupMember.findUnique({
       where: { groupId_userId: { groupId, userId: session.userId } }

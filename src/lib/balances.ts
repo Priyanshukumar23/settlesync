@@ -58,8 +58,8 @@ export async function calculateGroupBalances(groupId: string): Promise<Record<st
            title: `Paid: ${expense.title}`,
            date: expense.date,
            amountChange: expense.convertedAmount,
-           currency: expense.currency,
-           originalAmount: expense.amount
+           currency: expense.originalCurrency,
+           originalAmount: expense.originalAmount
          });
          balances[expense.paidById].netBalance += expense.convertedAmount;
          balances[expense.paidById].totalToReceive += expense.convertedAmount;
@@ -71,7 +71,7 @@ export async function calculateGroupBalances(groupId: string): Promise<Record<st
       if (balances[participant.userId]) {
         const memberInfo = group.members.find(m => m.userId === participant.userId);
         if (memberInfo && expenseDate >= memberInfo.joinedAt && (!memberInfo.leftAt || expenseDate <= memberInfo.leftAt)) {
-          const ratio = participant.amountOwed / expense.amount;
+          const ratio = participant.amountOwed / expense.originalAmount;
           const convertedOwed = expense.convertedAmount * ratio;
 
           balances[participant.userId].ledger.push({
@@ -80,7 +80,7 @@ export async function calculateGroupBalances(groupId: string): Promise<Record<st
             title: `Owe: ${expense.title}`,
             date: expense.date,
             amountChange: -convertedOwed,
-            currency: expense.currency,
+            currency: expense.originalCurrency,
             originalAmount: participant.amountOwed
           });
           balances[participant.userId].netBalance -= convertedOwed;

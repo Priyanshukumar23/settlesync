@@ -3,12 +3,12 @@ import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { ExchangeRateService } from "@/lib/ExchangeRateService";
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const groupId = params.id;
+    const groupId = (await params).id;
     const body = await req.json();
     const { validRows, anomalies, resolutions, totalRows } = body;
 

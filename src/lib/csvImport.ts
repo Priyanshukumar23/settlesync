@@ -94,7 +94,7 @@ export class AnomalyEngine {
     const cleanRows: CsvRow[] = [];
 
     // Map rows to standard schema based on mapping
-    const mappedRows = rows.map(r => {
+    const mappedRows: CsvRow[] = rows.map(r => {
       return {
         title: r[mapping.title],
         amount: r[mapping.amount],
@@ -111,7 +111,7 @@ export class AnomalyEngine {
       const ctx: RuleContext = { row, rowNumber, allRows: mappedRows, activeMemberIds };
       
       let rowValid = true;
-      let currentRow = { ...row };
+      let currentRow: CsvRow = { ...row };
 
       for (const rule of this.rules) {
         const result = rule.evaluate({ ...ctx, row: currentRow });
