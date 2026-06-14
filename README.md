@@ -30,7 +30,7 @@ The application helps groups to seamlessly:
 
 ## 🚀 Live Demo
 
-**🌍 Deployed URL:** [https://your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)
+**🌍 Deployed URL:** [https://settlesync-theta.vercel.app/](https://your-vercel-url.vercel.app)
 
 ---
 
